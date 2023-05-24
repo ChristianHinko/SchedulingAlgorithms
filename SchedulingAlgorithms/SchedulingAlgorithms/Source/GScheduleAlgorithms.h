@@ -19,7 +19,7 @@ class GDelegate;
  * 
  * See G_REGISTER_SCHEDULE_ALGORITHM() for adding scheduling algorithms to this.
  */
-extern std::map<std::string, GDelegate<void, GTaskProcessor&, std::vector<GTask>&>> GScheduleAlgorithms;
+extern std::map<std::string, GDelegate<void(GTaskProcessor&, std::vector<GTask>&)>> GScheduleAlgorithms;
 
 /**
  * Statically registers a given function to the GScheduleAlgorithms.
@@ -34,7 +34,7 @@ namespace\
 	public:\
 		GRegisterScheduleAlgorithm_##Function()\
 		{\
-			GScheduleAlgorithms.emplace(NameString, GDelegate<void, GTaskProcessor&, std::vector<GTask>&>::CreateStatic(Function));\
+			GScheduleAlgorithms.emplace(NameString, GDelegate<void(GTaskProcessor&, std::vector<GTask>&)>::CreateStatic(Function));\
 		}\
 	};\
 \

@@ -37,7 +37,7 @@ int main(const int argc, const char* const argv[])
 		std::cout << '\n';
 
 		std::cout << "Availible schedule algorithms: " << '\n';
-		for (std::pair<std::string, GDelegate<void, GTaskProcessor&, std::vector<GTask>&>> ScheduleAlgorithm : GScheduleAlgorithms)
+		for (std::pair<std::string, GDelegate<void(GTaskProcessor&, std::vector<GTask>&)>> ScheduleAlgorithm : GScheduleAlgorithms)
 		{
 			std::cout << '\"' << ScheduleAlgorithm.first << '\"' << '\n';
 		}
@@ -66,7 +66,7 @@ int main(const int argc, const char* const argv[])
 
 	// Get the schedule algorithm
 	const std::string AlgorithmName = argv[2];
-	std::map<std::string, GDelegate<void, GTaskProcessor&, std::vector<GTask>&>>::iterator ScheduleAlgorithm = GScheduleAlgorithms.find(AlgorithmName);
+	std::map<std::string, GDelegate<void(GTaskProcessor&, std::vector<GTask>&)>>::iterator ScheduleAlgorithm = GScheduleAlgorithms.find(AlgorithmName);
 	if (ScheduleAlgorithm == GScheduleAlgorithms.end())
 	{
 		std::cout << "No \"" << AlgorithmName << "\" scheduling algorithm exists. Exiting." << '\n';

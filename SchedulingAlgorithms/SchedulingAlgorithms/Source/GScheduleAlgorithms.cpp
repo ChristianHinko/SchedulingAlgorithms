@@ -10,7 +10,7 @@
 
 
 
-std::map<std::string, GDelegate<void, GTaskProcessor&, std::vector<GTask>&>> GScheduleAlgorithms;
+std::map<std::string, GDelegate<void(GTaskProcessor&, std::vector<GTask>&)>> GScheduleAlgorithms;
 
 
 G_REGISTER_SCHEDULE_ALGORITHM(std::string("FCFS"), ScheduleAlgorithmFirstComeFirstServe)

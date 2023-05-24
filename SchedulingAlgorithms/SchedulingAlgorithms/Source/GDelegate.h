@@ -8,7 +8,7 @@ class GDelegate;
 
 
 template <class TReturnType, class... TParameterTypes>
-bool operator==(const GDelegate<TReturnType, TParameterTypes...>& InDelegateA, const GDelegate<TReturnType, TParameterTypes...>& InDelegateB);
+bool operator==(const GDelegate<TReturnType(TParameterTypes...)>& InDelegateA, const GDelegate<TReturnType(TParameterTypes...)>& InDelegateB);
 
 
 /**
@@ -17,10 +17,10 @@ bool operator==(const GDelegate<TReturnType, TParameterTypes...>& InDelegateA, c
  * Invoking member functions on objects are not supported.
  */
 template <class TReturnType, class... TParameterTypes>
-class GDelegate
+class GDelegate<TReturnType(TParameterTypes...)>
 {
 	template <class TReturnType, class... TParameterTypes>
-	friend bool operator==(const GDelegate<TReturnType, TParameterTypes...>&, const GDelegate<TReturnType, TParameterTypes...>&);
+	friend bool operator==(const GDelegate<TReturnType(TParameterTypes...)>&, const GDelegate<TReturnType(TParameterTypes...)>&);
 public:
 	typedef TReturnType(*TFunctionPtrType)(TParameterTypes...);
 
@@ -43,20 +43,20 @@ protected:
 };
 
 template <class TReturnType, class ...TParameterTypes>
-bool operator==(const GDelegate<TReturnType, TParameterTypes...>& InDelegateA, const GDelegate<TReturnType, TParameterTypes...>& InDelegateB)
+bool operator==(const GDelegate<TReturnType(TParameterTypes...)>& InDelegateA, const GDelegate<TReturnType(TParameterTypes...)>& InDelegateB)
 {
 	return (InDelegateA.Function == InDelegateB.Function);
 }
 
 
 template <class TReturnType, class... TParameterTypes>
-GDelegate<TReturnType, TParameterTypes...>::GDelegate()
+GDelegate<TReturnType(TParameterTypes...)>::GDelegate()
 	: Function(nullptr)
 {
 }
 
 template <class TReturnType, class... TParameterTypes>
-GDelegate<TReturnType, TParameterTypes...> GDelegate<TReturnType, TParameterTypes...>::CreateStatic(const TFunctionPtrType InFunction)
+GDelegate<TReturnType(TParameterTypes...)> GDelegate<TReturnType(TParameterTypes...)>::CreateStatic(const TFunctionPtrType InFunction)
 {
 	GDelegate Delegate = GDelegate();
 	Delegate.Function = InFunction;
@@ -64,25 +64,25 @@ GDelegate<TReturnType, TParameterTypes...> GDelegate<TReturnType, TParameterType
 }
 
 template <class TReturnType, class... TParameterTypes>
-void GDelegate<TReturnType, TParameterTypes...>::Bind(const GDelegate InDelegate)
+void GDelegate<TReturnType(TParameterTypes...)>::Bind(const GDelegate InDelegate)
 {
 	Function = InDelegate.Function;
 }
 
 template <class TReturnType, class... TParameterTypes>
-void GDelegate<TReturnType, TParameterTypes...>::BindStatic(const TFunctionPtrType InFunction)
+void GDelegate<TReturnType(TParameterTypes...)>::BindStatic(const TFunctionPtrType InFunction)
 {
 	Bind(CreateStatic(InFunction));
 }
 
 template <class TReturnType, class... TParameterTypes>
-void GDelegate<TReturnType, TParameterTypes...>::Execute(TParameterTypes... InParameters) const
+void GDelegate<TReturnType(TParameterTypes...)>::Execute(TParameterTypes... InParameters) const
 {
 	Function(InParameters...);
 }
 
 template <class TReturnType, class... TParameterTypes>
-void GDelegate<TReturnType, TParameterTypes...>::Unbind()
+void GDelegate<TReturnType(TParameterTypes...)>::Unbind()
 {
 	Function = nullptr;
 }
