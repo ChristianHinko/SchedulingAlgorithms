@@ -66,7 +66,7 @@ void GMulticastDelegate<TParameterTypes...>::Add(const GDelegate<void, TParamete
 template <class... TParameterTypes>
 void GMulticastDelegate<TParameterTypes...>::AddStatic(const typename GDelegate<void, TParameterTypes...>::TFunctionPtrType InFunction)
 {
-	Add(GDelegate<void, TParameterTypes...>(InFunction));
+	Add(GDelegate<void, TParameterTypes...>::CreateStatic(InFunction));
 }
 
 template <class... TParameterTypes>
@@ -86,5 +86,5 @@ bool GMulticastDelegate<TParameterTypes...>::Remove(const GDelegate<void, TParam
 template <class... TParameterTypes>
 bool GMulticastDelegate<TParameterTypes...>::RemoveStatic(const typename GDelegate<void, TParameterTypes...>::TFunctionPtrType InFunction)
 {
-	return Remove(GDelegate<void, TParameterTypes...>(InFunction));
+	return Remove(GDelegate<void, TParameterTypes...>::CreateStatic(InFunction));
 }

@@ -25,8 +25,13 @@ public:
 	typedef TReturnType(*TFunctionPtrType)(TParameterTypes...);
 
 	GDelegate();
-	GDelegate(const TFunctionPtrType InFunction);
 
+	/** Create a delegate from a function. */
+	static GDelegate CreateStatic(const TFunctionPtrType InFunction);
+
+	/** Bind another delegate to us. */
+	void Bind(const GDelegate InDelegate);
+	/** Bind a function to us. */
 	void BindStatic(const TFunctionPtrType InFunction);
 
 	void Execute(TParameterTypes... InParameters) const;
@@ -49,17 +54,25 @@ GDelegate<TReturnType, TParameterTypes...>::GDelegate()
 	: Function(nullptr)
 {
 }
+
 template <class TReturnType, class... TParameterTypes>
-GDelegate<TReturnType, TParameterTypes...>::GDelegate(const TFunctionPtrType InFunction)
-	: GDelegate()
+GDelegate<TReturnType, TParameterTypes...> GDelegate<TReturnType, TParameterTypes...>::CreateStatic(const TFunctionPtrType InFunction)
 {
-	BindStatic(InFunction);
+	GDelegate Delegate = GDelegate();
+	Delegate.Function = InFunction;
+	return Delegate;
+}
+
+template <class TReturnType, class... TParameterTypes>
+void GDelegate<TReturnType, TParameterTypes...>::Bind(const GDelegate InDelegate)
+{
+	Function = InDelegate.Function;
 }
 
 template <class TReturnType, class... TParameterTypes>
 void GDelegate<TReturnType, TParameterTypes...>::BindStatic(const TFunctionPtrType InFunction)
 {
-	Function = InFunction;
+	Bind(CreateStatic(InFunction));
 }
 
 template <class TReturnType, class... TParameterTypes>

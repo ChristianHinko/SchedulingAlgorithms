@@ -34,7 +34,7 @@ namespace\
 	public:\
 		GRegisterScheduleAlgorithm_##Function()\
 		{\
-			GScheduleAlgorithms.emplace(NameString, Function);\
+			GScheduleAlgorithms.emplace(NameString, GDelegate<void, GTaskProcessor&, std::vector<GTask>&>::CreateStatic(Function));\
 		}\
 	};\
 \
